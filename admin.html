@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Dashboard — Health Quest</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body { font-family: Arial, sans-serif; background: #f7f7f7; }
+    .dashboard { max-width: 1000px; margin: 2rem auto; background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    h1 { margin-bottom: 1rem; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+    th { background: #0077cc; color: white; }
+    tr:nth-child(even) { background: #f9f9f9; }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <h1>Doctor Bookings Dashboard</h1>
+    <table id="bookingsTable">
+      <thead>
+        <tr>
+          <th>Doctor</th>
+          <th>Date</th>
+          <th>Fee (KES)</th>
+          <th>Transaction Ref</th>
+          <th>Timestamp</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Firebase will populate here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script type="module">
+    // Import Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    // Firebase config 
+    const firebaseConfig = {
+    apiKey: "AIzaSyCnHTWFnBrgTAhrqp3mIwEzIQVBMR8_kdM",
+    authDomain: "health-quest-9edb4.firebaseapp.com",
+    projectId: "health-quest-9edb4",
+    storageBucket: "health-quest-9edb4.firebasestorage.app",
+    messagingSenderId: "348057700840",
+    appId: "1:348057700840:web:38cb8e29e028152413bc5d"
+    };
+
+    // Init Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Load bookings from Firestore
+    async function loadBookings() {
+      const tableBody = document.querySelector("#bookingsTable tbody");
+      tableBody.innerHTML = "";
+
+      const q = query(collection(db, "bookings"), orderBy("timestamp", "desc"));
+      const snapshot = await getDocs(q);
+
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${data.doctor}</td>
+          <td>${data.date}</td>
+          <td>${data.fee}</td>
+          <td>${data.transactionRef}</td>
+          <td>${new Date(data.timestamp.seconds * 1000).toLocaleString()}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    loadBookings();
+  </script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Booking Confirmation — Health Quest</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-header small">
+    <div class="container header-inner">
+      <a class="brand" href="health_quest.html">Health Quest</a>
+      <nav class="main-nav">
+        <a href="health_quest.html">Home</a>
+        <a href="doctors.html">Find Doctors</a>
+        <a href="programs.html">Programs</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="confirmation">
+      <h1>Booking Confirmed!</h1>
+      <p>Thank you for booking with <strong>Health Quest</strong>. Your consultation has been successfully scheduled.</p>
+
+      <div class="details-box">
+        <h3>Booking Details</h3>
+        <p><strong>Doctor:</strong> <span id="confDoc"></span></p>
+        <p><strong>Date & Time:</strong> <span id="confDate"></span></p>
+        <p><strong>Amount Paid:</strong> KES <span id="confFee"></span></p>
+        <p><strong>Transaction Ref:</strong> <span id="confRef"></span></p>
+      </div>
+
+      <p>We’ve also sent your details via email/SMS 📩</p>
+      <a href="health_quest.html" class="btn btn-accent">Back to Home</a>
+    </section>
+  </main>
+
+  <footer class="site-footer small">
+    <div class="container footer-inner">
+      <div><strong>Health Quest</strong></div>
+    </div>
+  </footer>
+
+  <script>
+    // Extract params from Flutterwave redirect
+    const params = new URLSearchParams(window.location.search);
+
+    document.getElementById("confDoc").innerText = params.get("doctor") || "Your Doctor";
+    document.getElementById("confDate").innerText = params.get("date") || "Selected Date";
+    document.getElementById("confFee").innerText = params.get("amount") || "2000";
+    document.getElementById("confRef").innerText = params.get("tx_ref") || "N/A";
+    
+  </script>
+</body>
+</html>

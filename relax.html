@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Relax — Health Quest</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-header small">
+    <div class="container header-inner">
+      <a class="brand" href="health_quest.html">Health Quest</a>
+      <nav class="main-nav">
+        <a href="health_quest.html">Home</a>
+        <a href="programs.html">Programs</a>
+        <a href="doctors.html">Find Doctors</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>Relax — Guided Tools</h1>
+    <section class="relax-tools">
+      <div class="timer-card">
+        <h3>Countdown timer</h3>
+        <input id="mins" type="number" min="0" placeholder="Minutes" />
+        <input id="secs" type="number" min="0" placeholder="Seconds" />
+        <div class="timer-display" id="timerDisplay">00:00</div>
+        <div class="timer-controls">
+          <button id="startTimer" class="btn">Start</button>
+          <button id="stopTimer" class="btn btn-outline">Stop</button>
+        </div>
+      </div>
+
+      <div class="breathing-card">
+        <h3>Box Breathing (60s)</h3>
+        <div id="breathDisplay" class="breath-display">Ready</div>
+        <button id="startBreath" class="btn">Start Breathing</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer small">
+    <div class="container footer-inner">
+      <div><strong>Health Quest</strong></div>
+    </div>
+  </footer>
+
+  <script type="module">
+    // Countdown timer
+    let timerInterval = null;
+    const timerDisplay = document.getElementById('timerDisplay');
+    document.getElementById('startTimer').addEventListener('click', () => {
+      clearInterval(timerInterval);
+      let m = parseInt(document.getElementById('mins').value || 0);
+      let s = parseInt(document.getElementById('secs').value || 0);
+      let total = m * 60 + s;
+      if(total <= 0) total = 60;
+      timerDisplay.innerText = formatTime(total);
+      timerInterval = setInterval(() => {
+        total--;
+        timerDisplay.innerText = formatTime(total);
+        if(total <= 0) { clearInterval(timerInterval); alert('Time is up — breathe gently.'); }
+      }, 1000);
+    });
+    document.getElementById('stopTimer').addEventListener('click', () => {
+      clearInterval(timerInterval);
+    });
+    function formatTime(t){ const mm = String(Math.floor(t/60)).padStart(2,'0'); const ss = String(t%60).padStart(2,'0'); return `${mm}:${ss}`; }
+
+    // Box breathing (4-4-4-4) for 4 cycles ~ 64s
+    let breathInterval = null;
+    document.getElementById('startBreath').addEventListener('click', () => {
+      clearInterval(breathInterval);
+      const phases = ['Breathe in (4s)','Hold (4s)','Breathe out (4s)','Hold (4s)'];
+      let idx = 0;
+      let cycle = 0;
+      document.getElementById('breathDisplay').innerText = phases[0];
+      breathInterval = setInterval(() => {
+        idx = (idx + 1) % phases.length;
+        if(idx === 0) cycle++;
+        document.getElementById('breathDisplay').innerText = phases[idx];
+        if(cycle >= 4){ clearInterval(breathInterval); document.getElementById('breathDisplay').innerText = 'Done — notice how you feel.';}
+      }, 4000);
+    });
+  </script>
+</body>
+</html>

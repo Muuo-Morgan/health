@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contact — Health Quest</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-header small">
+    <div class="container header-inner">
+      <a class="brand" href="health_quest.html">Health Quest</a>
+      <nav class="main-nav">
+        <a href="health_quest.html">Home</a>
+        <a href="programs.html">Programs</a>
+        <a href="doctors.html">Find Doctors</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>Contact & Data Requests</h1>
+    <p>If you need to request data deletion, export, or have questions, use the form below.</p>
+
+    <form id="contactForm" class="contact-form">
+      <input type="text" id="cname" placeholder="Your name" required />
+      <input type="email" id="cemail" placeholder="Your email" required />
+      <textarea id="cmessage" rows="6" placeholder="Your message or data request" required></textarea>
+      <button type="submit" class="btn">Send Message</button>
+    </form>
+
+    <section class="data-policy">
+      <h3>Data policy</h3>
+      <p>We store only necessary data. To request deletion, include “DELETE” in your message. We will respond within 30 days.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer small">
+    <div class="container footer-inner">
+      <div><strong>Health Quest</strong></div>
+      <div>Hotline: <a href="tel:+254797831000">+254 797 831 000</a></div>
+    </div>
+  </footer>
+
+  <script type="module">
+    // Firebase initialization will be injected by js/app.js
+    // The contact form will save to Firestore "contacts" collection
+    import { saveContact } from './app.js';
+    document.getElementById('contactForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('cname').value;
+      const email = document.getElementById('cemail').value;
+      const message = document.getElementById('cmessage').value;
+      try {
+        await saveContact({ name, email, message });
+        alert('Message sent. We will respond within 3 business days.');
+        e.target.reset();
+      } catch (err) {
+        console.error(err);
+        alert('Error sending message — try again.');
+      }
+    });
+  </script>
+</body>
+</html>

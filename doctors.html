@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Find Doctors — Health Quest</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-header small">
+    <div class="container header-inner">
+      <a class="brand" href="health_quest.html">Health Quest</a>
+      <nav class="main-nav">
+        <a href="health_quest.html">Home</a>
+        <a href="programs.html">Programs</a>
+        <a href="stats.html">Statistics</a>
+        <a href="relax.html">Relax</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>Verified Clinicians</h1>
+    <p>Browse available clinicians and book consultations (premium).</p>
+
+    <div class="doctors-grid">
+      <!-- Each doctor card links to a profile page; here we link to a template with query params -->
+      <div class="doctor-card">
+        <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Dr. A">
+        <h4>Dr. Amina K.</h4>
+        <p>Clinical Psychologist — CBT</p>
+        <a href="doctor-profile.html?doc=amina" class="btn btn-sm">View profile</a>
+      </div>
+
+      <div class="doctor-card">
+        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Dr. B">
+        <h4>Dr. David N.</h4>
+        <p>Psychiatrist — Telehealth</p>
+        <a href="doctor-profile.html?doc=david" class="btn btn-sm">View profile</a>
+      </div>
+
+      <div class="doctor-card">
+        <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="Dr. C">
+        <h4>Dr. Grace M.</h4>
+        <p>Counselor — Youth & Family</p>
+        <a href="doctor-profile.html?doc=grace" class="btn btn-sm">View profile</a>
+      </div>
+    </div>
+
+    <section>
+      <h3>How booking works</h3>
+      <ol>
+        <li>Choose a clinician and view profile</li>
+        <li>Book a time, pay via Flutterwave (M-Pesa or card)</li>
+        <li>Receive secure link for teleconsultation</li>
+      </ol>
+    </section>
+  </main>
+
+  <footer class="site-footer small">
+    <div class="container footer-inner">
+      <div><strong>Health Quest</strong></div>
+      <div>Hotline: <a href="tel:+254797831000">+254 797 831 000</a></div>
+    </div>
+  </footer>
+
+  <script src="js/app.js" type="module"></script>
+</body>
+</html>

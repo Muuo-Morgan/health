@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Doctor Profile — Health Quest</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body>
+  <header class="site-header small">
+    <div class="container header-inner">
+      <a class="brand" href="health_quest.html">Health Quest</a>
+      <nav class="main-nav">
+        <a href="health_quest.html">Home</a>
+        <a href="programs.html">Programs</a>
+        <a href="doctors.html">Find Doctors</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="profile" class="doctor-profile">
+      <!-- JS will populate this -->
+      <h1 id="docName">Doctor Name</h1>
+      <div class="profile-grid">
+        <img id="docImg" src="" alt="doctor image">
+        <div>
+          <p id="docBio"></p>
+          <p><strong>Specialty:</strong> <span id="docSpecialty"></span></p>
+          <p><strong>Languages:</strong> English, Kiswahili</p>
+          <p><strong>Fees (KES):</strong> <span id="docFee">2000</span></p>
+          
+          <div class="booking-section">
+            <label for="datePicker"><strong>Select Appointment Date & Time:</strong></label>
+            <input id="datePicker" type="text" placeholder="Choose date & time">
+            <button id="bookBtn" class="btn btn-accent">Book & Pay</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer small">
+    <div class="container footer-inner">
+      <div><strong>Health Quest</strong></div>
+    </div>
+  </footer>
+
+  <!-- Flatpickr (calendar) -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <!-- Flutterwave -->
+  <script src="https://checkout.flutterwave.com/v3.js"></script>
+  <!-- Booking Script -->
+  <script>
+    // Initialize calendar with time slots
+    flatpickr("#datePicker", {
+      enableTime: true,
+      dateFormat: "Y-m-d H:i",
+      minDate: "today",
+      defaultHour: 9,
+      minTime: "09:00",
+      maxTime: "18:00"
+    });
+
+
+    const firebaseConfig = {
+    apiKey: "AIzaSyCnHTWFnBrgTAhrqp3mIwEzIQVBMR8_kdM",
+    authDomain: "health-quest-9edb4.firebaseapp.com",
+    projectId: "health-quest-9edb4",
+    storageBucket: "health-quest-9edb4.firebasestorage.app",
+    messagingSenderId: "348057700840",
+    appId: "1:348057700840:web:38cb8e29e028152413bc5d"
+    };
+
+    document.getElementById("bookBtn").addEventListener("click", function() {
+      const doctorName = document.getElementById("docName").innerText;
+      const fee = parseInt(document.getElementById("docFee").innerText);
+      const date = document.getElementById("datePicker").value;
+
+      if (!date) {
+        alert("Please select a date & time before booking.");
+        return;
+      }
+
+      // Launch Flutterwave checkout
+      FlutterwaveCheckout({
+        public_key: "FLWPUBK_TEST-0f9dfeb190a568aea8395e980fd04546-X", // Replace with your Flutterwave public key
+        tx_ref: "hq-" + Date.now(),
+        amount: fee,
+        currency: "KES",
+        payment_options: "card, mobilemoney, mpesa",
+        redirect_url: "thankyou.html",
+        customer: {
+          email: "customer@example.com",
+          phone_number: "0712345678",
+          name: "Health Quest User",
+        },
+        customizations: {
+          title: "Health Quest Booking",
+          description: `Booking consultation with ${doctorName} on ${date}`,
+        },
+      });
+    });
+  </script>
+</body>
+</html>

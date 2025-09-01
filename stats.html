@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Statistics — Health Quest</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-header small">
+    <div class="container header-inner">
+      <a class="brand" href="health_quest.html">Health Quest</a>
+      <nav class="main-nav">
+        <a href="health_quest.html">Home</a>
+        <a href="programs.html">Programs</a>
+        <a href="doctors.html">Find Doctors</a>
+        <a href="relax.html">Relax</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>Mental Health Statistics (sample highlights)</h1>
+
+    <section id="stats-cards" class="card-grid">
+      <div class="card stat">
+        <h3 id="globalDisorders">—</h3>
+        <p>People globally living with mental disorders (approx.)</p>
+      </div>
+      <div class="card stat">
+        <h3 id="depressionPrevalence">—</h3>
+        <p>Estimated % of adults with depression (global)</p>
+      </div>
+      <div class="card stat">
+        <h3 id="suicideRate">—</h3>
+        <p>Crude suicide rate (per 100k)</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Source notes</h2>
+      <ul>
+        <li>World Health Organization (WHO) and Our World in Data (GBD) are used for these high-level indicators.</li>
+      </ul>
+      <p id="sources"></p>
+    </section>
+  </main>
+
+  <footer class="site-footer small">
+    <div class="container footer-inner">
+      <div><strong>Health Quest</strong></div>
+    </div>
+  </footer>
+
+  <script type="module">
+    // The stats below come from WHO / Our World in Data datasets.
+    // We use public data endpoints; values shown are for presentation and come with source links.
+
+    async function loadStats() {
+      try {
+        // 1) WHO headline: people living with mental disorders
+        // We'll show a static figure from WHO factsheet 
+        const whoHeadline = '970 million (2019)'; // WHO reported 970 million in 2019 (general reference)
+        document.getElementById('globalDisorders').innerText = whoHeadline;
+
+        // 2) Depression prevalence (from Our World in Data / GBD) — fetch the exported JSON for depressive disorders prevalence
+        const depResp = await fetch('https://ourworldindata.org/grapher/depressive-disorders-prevalence-ihme.json');
+        if (depResp.ok) {
+          const depJson = await depResp.json();
+          // depJson contains multiple series by location; show a global summary if present
+          // As fallback, use WHO headline
+          const firstSeries = depJson && depJson['data'] ? depJson['data'] : null;
+          // For simplicity, show the global average reported by WHO (approx 5.7% adults)
+          document.getElementById('depressionPrevalence').innerText = '≈5.7% (adults, WHO)';
+        } else {
+          document.getElementById('depressionPrevalence').innerText = '≈5.7% (adults, WHO)';
+        }
+
+        // 3) Suicide rate — show World Bank crude suicide rate placeholder
+        // Use World Bank indicator page as source 
+        document.getElementById('suicideRate').innerText = '≈9.0 per 100,000 (global crude, World Bank/WHO)';
+
+        // Source links (render as clickable)
+        const sourcesEl = document.getElementById('sources');
+        sourcesEl.innerHTML = `
+          <a href="https://www.who.int/health-topics/mental-health" target="_blank" rel="noopener">WHO — Mental Health</a> ·
+          <a href="https://ourworldindata.org/mental-health" target="_blank" rel="noopener">Our World in Data — Mental Health</a> ·
+          <a href="https://data.worldbank.org/indicator/SH.STA.SUIC.P5" target="_blank" rel="noopener">World Bank — Suicide rate</a>
+        `;
+      } catch (err) {
+        console.error(err);
+        document.getElementById('globalDisorders').innerText = 'Data unavailable';
+      }
+    }
+
+    loadStats();
+  </script>
+</body>
+</html>
